@@ -43,8 +43,8 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `feedBacker`.`feedbackRatingMaster` (
   `rating` INT(1) NOT NULL,
-  `comment` VARCHAR(120) NULL,
-  PRIMARY KEY (`rating`, `comment`))
+  `ratingDescription` VARCHAR(120) NULL,
+  PRIMARY KEY (`rating`))
 ENGINE = InnoDB;
 
 
@@ -53,15 +53,21 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `feedBacker`.`feedback` (
   `eventID` INT(3) NOT NULL,
+  `employeeEmail` VARCHAR(200) NOT NULL,
   `rating` INT(1) NULL,
   `comment` VARCHAR(120) NULL,
-  PRIMARY KEY (`eventID`, `rating`),
+  PRIMARY KEY (`eventID`, `employeeEmail`,`rating`),
   INDEX `rating_idx` (`rating` ASC),
   CONSTRAINT `eventID`
     FOREIGN KEY (`eventID`)
     REFERENCES `feedBacker`.`eventMaster` (`eventID`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
+  CONSTRAINT `employeeID`
+    FOREIGN KEY (`employeeID`)
+    REFERENCES `feedBacker`.`employeeMaster` (`employeeEmail`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION
   CONSTRAINT `rating`
     FOREIGN KEY (`rating`)
     REFERENCES `feedBacker`.`feedbackRatingMaster` (`rating`)
