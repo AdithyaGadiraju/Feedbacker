@@ -22,15 +22,15 @@ con.connect(function(err) {
   if (err) throw err;
   console.log("Connected!");
 
-// function that gives sql statement that can be used to insert data into feedback table.
-function insfeedback(eID, eEmail, rate, comm) {
-    return "INSERT INTO feedback (eventID, employeeEmail, rating, comment) VALUES (" + eID + ", '" + eEmail + "', " + rate + ", '" + comm + "')";    
+// function that returns sql statement for inserting data into eventmaster table.
+function insEvent(eID, sDate, fDate, eDesc) {
+     return "INSERT INTO eventmaster (eventID, startDate, finishDate, eventDescription) VALUES (" + eID + ", '" + sDate + "', '" + fDate + "', '" + eDesc + "')";    
     }
     
-    var ins = insfeedback(1, 'james@hotmail.com', 1, "Could have touched a little more on the new Iphone X but overall quite good.")
+    var ins = insEvent(1, '2017-01-01 15:00:00', '2017-01-01 16:00:00', 'Monthly meeting for product team')
     con.query(ins, function (err, result) {
     if (err) throw err;
-    console.log("1 record inserted");
+    console.log("New Event Inserted!!!");
     
   });
 });

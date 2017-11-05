@@ -22,15 +22,15 @@ con.connect(function(err) {
   if (err) throw err;
   console.log("Connected!");
 
-// function that gives sql statement that can be used to insert data into feedback table.
-function insfeedback(eID, eEmail, rate, comm) {
-    return "INSERT INTO feedback (eventID, employeeEmail, rating, comment) VALUES (" + eID + ", '" + eEmail + "', " + rate + ", '" + comm + "')";    
-    }
-    
-    var ins = insfeedback(1, 'james@hotmail.com', 1, "Could have touched a little more on the new Iphone X but overall quite good.")
+  function insRating(eRating, eRatingDesc){
+    return "INSERT INTO feedbackratingmaster (rating, ratingDescription) VALUES " + "(" + eRating +", '" + eRatingDesc + "')";    
+  }
+  
+ var ins = insRating(1, 'Very Good');
+
     con.query(ins, function (err, result) {
     if (err) throw err;
-    console.log("1 record inserted");
+    console.log("Rating Inserted!");
     
   });
 });
