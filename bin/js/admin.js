@@ -1,80 +1,129 @@
+var mysql = require('mysql');
+var fs = require('fs');
+var ini = require('ini');
+var DB = require('./feedBackerDB');
+var con = DB.returnCon(mysql, fs, ini);
+
+//Functions that allow for opening and closing connections to the database.
+function openDatabase() {
+    con.connect(function (err) {
+        if (err) throw err;
+        console.log("Connection Successfull!")
+    });
+}
+
+function closeDatabase() {
+    con.end();
+}
+
 //CRUD functions for employeemaster table.
-function createEmployeemasterTable(){
-    return "CREATE TABLE employeemaster (employeeEmail varchar(200) NOT NULL, PRIMARY KEY (employeeEmail));"
+function createEmployeemasterTable() {
+    var sql = "CREATE TABLE employeemaster (employeeEmail varchar(200) NOT NULL, PRIMARY KEY (employeeEmail))";
+    DB.queryDatabase(con, sql);
 }
 
-function insEmployee(employeeEmail){
-    return "INSERT INTO employeemaster (employeeEmail) VALUES " + "('" + employeeEmail +"')";    
-  }
-
-function modEmployeeTable(oldEmployeeEmail, newEmployeeEmail){
-    return "UPDATE employeemaster SET employeEmail = '" + oldEmployeeEmail + "' WHERE employeeEmail '" + newEmployeeEmail + "';"
+function insEmployee(employeeEmail) {
+    var sql = "INSERT INTO employeemaster (employeeEmail) VALUES " + "('" + employeeEmail + "')";
+    DB.queryDatabase(con, sql);
 }
 
-function delEmployeeRow(employeeEmail){
-    return "DELETE FROM employeemaster WHERE employeeEmail = '" + employeeEmail + "';"
+function modEmployeeTable(oldEmployeeEmail, newEmployeeEmail) {
+    var sql = "UPDATE employeemaster SET employeeEmail = '" + oldEmployeeEmail + "' WHERE employeeEmail '" + newEmployeeEmail + "'";
+    DB.queryDatabase(con, sql);
 }
 
-function delEmployeemasterTable(){
-    return "DROP TABLE employeemaster;"
+function delEmployeeRow(employeeEmail) {
+    var sql = "DELETE FROM employeemaster WHERE employeeEmail = '" + employeeEmail + "'";
+    DB.queryDatabase(con, sql);
 }
 
-function showEmployees(){
-    "SELECT FROM employeemaster ORDER BY employeeEmail ASC;"
+function delEmployeemasterTable() {
+    var sql = "DROP TABLE employeemaster";
+    DB.queryDatabase(con, sql);
+}
+
+function showEmployees() {
+    var sql = "SELECT FROM employeemaster ORDER BY employeeEmail ASC";
+    DB.queryDatabase(con, sql);
 }
 
 //CRUD functions for feedbackratingmaster table.
-function createFeedbackratingmasterTable(){
-    return "CREATE TABLE feedbackratingmaster (rating int(1) NOT NULL, ratingDescription varchar(120), PRIMARY KEY (rating));"
+function createFeedbackratingmasterTable() {
+    var sql = "CREATE TABLE feedbackratingmaster (rating int(1) NOT NULL, ratingDescription varchar(120), PRIMARY KEY (rating))";
+    DB.queryDatabase(con, sql);
 }
 
-function insRating(rating, ratingDescription){
-    return "INSERT INTO feedbackratingmaster (rating, ratingDescription) VALUES " + "(" + rating +", '" + ratingDescription + "');";    
-  }
-
-function modFeedbackratingmasterTable(ratingDescription, rating){
-    return "UPDATE feedbackratingmaster SET ratingDescription = '" + ratingDescription + "' WHERE rating = '" + rating
+function insRating(rating, ratingDescription) {
+    var sql = "INSERT INTO feedbackratingmaster (rating, ratingDescription) VALUES " + "(" + rating + ", '" + ratingDescription + "')";
+    DB.queryDatabase(con, sql);
 }
 
-function delFeedbackratingmasterRow(rating){
-    return "DELETE FROM feedbackratingmaster WHERE rating = " + rating + ";"
+function modFeedbackratingmasterTable(ratingDescription, rating) {
+    var sql = "UPDATE feedbackratingmaster SET ratingDescription = '" + ratingDescription + "' WHERE rating = '" + rating;
+    DB.queryDatabase(con, sql);
 }
 
-function delFeedbackratingmasterTable(){
-    return "DROP TABLE feedbackratingmaster;"
+
+function delFeedbackratingmasterRow(rating) {
+    var sql = "DELETE FROM feedbackratingmaster WHERE rating = " + rating;
+    DB.queryDatabase(con, sql);
 }
 
-function showRatings(){
-    return "SELECT * FROM feedbackratingmaster ORDER BY rating ASC;"
+function delFeedbackratingmasterTable() {
+    var sql = "DROP TABLE feedbackratingmaster";
+    DB.queryDatabase(con, sql);
 }
 
-//CRUD functions for eventMaster 
-function createEventmaster(){
-    return "CREATE TABLE eventmaster (eventID int(3) NOT NULL, startDate datetime, finishDate datetime, eventDescription varchar(120), PRIMARY KEY (eventID));"
+function showRatings() {
+    var sql = "SELECT * FROM feedbackratingmaster ORDER BY rating ASC";
+    DB.queryDatabase(con, sql);
+}
+
+//CRUD functions for eventMaster table.
+function createEventmaster() {
+    var sql = "CREATE TABLE eventmaster (eventID int(3) NOT NULL, startDate datetime, finishDate datetime, eventDescription varchar(120), PRIMARY KEY (eventID))";
+    DB.queryDatabase(con, sql);
 }
 
 function insEvent(eventID, startDate, finishDate, eventDescription) {
-    return "INSERT INTO eventmaster (eventID, startDate, finishDate, eventDescription) VALUES (" + eventID + ", '" + startDate + "', '" + finishDate + "', '" + eventDesc + "')";    
-   }
-
-function modEventmasterDescription(eventDescription, eventID){
-    return "UPDATE eventmaster SET eventDescription = '" + eventDescription + "' WHERE eventID = '" + eventID + "';"
+    var sql = "INSERT INTO eventmaster (eventID, startDate, finishDate, eventDescription) VALUES (" + eventID + ", '" + startDate + "', '" + finishDate + "', '" + eventDescription + "')";
+    DB.queryDatabase(con, sql);
 }
 
-function delEventmasterRow(eventID){
-    return "DELETE FROM eventmasters WHERE eventID = " + eventID + ";"
+function modEventmasterDescription(eventDescription, eventID) {
+    var sql = "UPDATE eventmaster SET eventDescription = '" + eventDescription + "' WHERE eventID = " + eventID;
+    DB.queryDatabase(con, sql);
 }
 
-function delEventmasterTable(){
-    return "DROP TABLE eventmaster;"
+function delEventmasterRow(eventID) {
+    var sql = "DELETE FROM eventmasters WHERE eventID = " + eventID;
+    DB.queryDatabase(con, sql);
 }
 
-function showAllEvents(){
-    return "SELECT * FROM eventmaster ORDER BY eventID ASC;"
+function delEventmasterTable() {
+    var sql = "DROP TABLE eventmaster";
+    DB.queryDatabase(con, sql);
 }
 
-function eventInfo(eventID){
-    return "SELECT * FROM eventmaster WHERE eventID = '" + eventID + "';"
+function showAllEvents() {
+    var sql = "SELECT * FROM eventmaster ORDER BY eventID ASC";
+    DB.queryDatabase(con, sql);
 }
 
-module.exports = {createEmployeemasterTable, insEmployee, modEmployeeTable, delEmployeeRow, delEmployeemasterTable, showEmployees, createFeedbackratingmasterTable, insRating, modFeedbackratingmasterTable, delFeedbackratingmasterRow, delFeedbackratingmasterTable, createEventmaster, insEvent, modEventmasterDescription, delEventmasterRow, showRatings, delEventmasterTable, eventInfo};
+function showEventInfo(eventID) {
+    var sql = "SELECT * FROM eventmaster WHERE eventID = " + eventID;
+    DB.queryDatabase(con, sql);
+}
+
+//Create and Delete functions for feedback table.
+function createFeedbackTable() {
+    var sql = "CREATE TABLE feedback(eventID int(3) NOT NULL, employeeEmail varchar(200) NOT NULL, rating int(1) NOT NULL, comment varchar(120), PRIMARY KEY (eventID, employeeEmail, rating), CONSTRAINT employeeEmail FOREIGN KEY (employeeEmail) REFERENCES employeemaster (employeeEmail), CONSTRAINT eventID FOREIGN KEY (eventID) REFERENCES eventmaster (eventID), CONSTRAINT rating FOREIGN KEY (rating) REFERENCES feedbackratingmaster (rating));";
+    DB.queryDatabase(con, sql);
+}
+
+function delFeedbackTable() {
+    var sql = "DROP TABLE feedback";
+    DB.queryDatabase(con, sql);
+}
+
+module.exports = {openDatabase, closeDatabase, createEmployeemasterTable, insEmployee, modEmployeeTable, delEmployeeRow, delEmployeemasterTable, showEmployees, createFeedbackratingmasterTable, insRating, modFeedbackratingmasterTable, delFeedbackratingmasterRow, delFeedbackratingmasterTable, createEventmaster, insEvent, modEventmasterDescription, delEventmasterRow, showRatings, delEventmasterTable, showEventInfo, createFeedbackTable, delFeedbackTable };

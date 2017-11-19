@@ -1,32 +1,29 @@
-// Feedback CRUD functions.
-function createFeedbackTable(){
-return "CREATE TABLE feedback (eventID int(3) NOT NULL, employeeEmail varChar(200) NOT NULL, rating int(1) NOT NULL, comment varChar(200), PRIMARY KEY (eventID, employeeEmail, rating), FORIEGN KEY (eventID) REFRENCES eventmaster (eventID), FORIEGN KEY (employeeEmail) REFRENCES employeemaster(employeeEmail), FORIEGN KEY (rating) REFRENCES feedbackratingmaster (rating));"
-}
+var mysql = require('mysql');
+var fs = require('fs');
+var ini = require('ini');
+var DB = require('./feedBackerDB');
+var con = DB.returnCon(mysql, fs, ini);
 
+//Functions that execute SQL queries relevant to the end user.
 function insFeedback(eventID, employeeEmail, rating, comment) {
-    return "INSERT INTO feedback (eventID, employeeEmail, rating, comment) VALUES (" + eventID + ", '" + employeeEmail + "', " +  + ", '" + comment + "')";    
-    }
-
-function modFeedback(rating, employeeEmail){
-    return "UPDATE feedback SET rating = '" + rating + "', SET employeeEmail '" + employeeEmail + "' WHERE eventID = " + eID + ";" 
+    var sql = "INSERT INTO feedback (eventID, employeeEmail, rating, comment) VALUES (" + eventID + ", '" + employeeEmail + "', " + rating + ", '" + comment + "')";
+    DB.queryDatabase(con, sql);    
 }
 
-function delFeedbackRow(eventID, employeeEmail, rating){
-    return "DELETE FROM feedback WHERE (eventID, employeeEmail, rating) IN (('" + eventID + "', '" + employeeEmail + "', '" + rating + "'));"
+function modFeedback(rating, employeeEmail, comment, eventID){
+    var sql = "UPDATE feedback SET rating = '" + rating + "', employeeEmail = '" + employeeEmail + "', comment = '" + comment + "' WHERE eventID = " + eventID 
+    DB.queryDatabase(con, sql);
 }
 
-function delFeedbackTable(){
-    return "DROP TABLE feedback;"
+function showSingleEventFeedback(eventID, employeeEmail){
+    var sql ="SELECT feedback.eventID, rating, comment FROM feedback WHERE eventID = " + eventID + " AND employeeEmail = '" + employeeEmail + "';"
+    DB.queryDatabase(con, sql);
 }
 
-function showSingleEventFeedback(eventID){
-    return "SELECT feedback.eventID, rating, comment FROM feedback WHERE eventID = '" + eventID + "';"
+function showAllEmployeeFeedback(employeeEmail){
+    var sql = "SELECT eventID, rating, comment FROM feedback WHERE employeeEmail = '" + employeeEmail + "';"
+    DB.queryDatabase(con, sql);
 }
 
-function showAllEventFeedback(){
-    return "SELECT feedback.eventID, rating, comment FROM feedback"
-}
-
-
-module.exports = {createFeedbackTable, insFeedback, modFeedback, delFeedbackRow, delFeedbackTable, showSingleEventFeedback, showAllEventFeedback};
+module.exports = {insFeedback, modFeedback, showSingleEventFeedback, showAllEmployeeFeedback};
 
