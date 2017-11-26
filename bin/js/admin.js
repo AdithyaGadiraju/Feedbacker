@@ -4,17 +4,6 @@ var ini = require('ini');
 var DB = require('./feedBackerDB');
 var con = DB.returnCon(mysql, fs, ini);
 
-//Functions that allow for opening and closing connections to the database.
-function openDatabase() {
-    con.connect(function (err) {
-        if (err) throw err;
-        console.log("Connection Successfull!")
-    });
-}
-
-function closeDatabase() {
-    con.end();
-}
 
 //CRUD functions for employeemaster table.
 function createEmployeemasterTable() {
@@ -126,4 +115,4 @@ function delFeedbackTable() {
     DB.queryDatabase(con, sql);
 }
 
-module.exports = {openDatabase, closeDatabase, createEmployeemasterTable, insEmployee, modEmployeeTable, delEmployeeRow, delEmployeemasterTable, showEmployees, createFeedbackratingmasterTable, insRating, modFeedbackratingmasterTable, delFeedbackratingmasterRow, delFeedbackratingmasterTable, createEventmaster, insEvent, modEventmasterDescription, delEventmasterRow, showRatings, delEventmasterTable, showEventInfo, createFeedbackTable, delFeedbackTable };
+module.exports = {createEmployeemasterTable, insEmployee, modEmployeeTable, delEmployeeRow, delEmployeemasterTable, showEmployees, createFeedbackratingmasterTable, insRating, modFeedbackratingmasterTable, delFeedbackratingmasterRow, delFeedbackratingmasterTable, createEventmaster, insEvent, modEventmasterDescription, delEventmasterRow, showRatings, delEventmasterTable, showEventInfo, createFeedbackTable, delFeedbackTable };

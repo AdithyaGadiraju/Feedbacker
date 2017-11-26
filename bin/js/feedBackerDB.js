@@ -1,6 +1,4 @@
-//File containing functions 
-
-// Returns connection object that can be used to perform DB tasks.
+ // returns a variable that is used to query functions.
 function returnCon(mysql, fs, ini){
   var config = ini.parse(fs.readFileSync('../../config.ini', 'utf-8'))
   var host      = config.database.host;
@@ -24,6 +22,16 @@ function queryDatabase(con, sql){
         console.log("Query Successfull.");
       });
     }
+  
+function connectToDatabase(con) {
+      con.connect(function (err) {
+          if (err) throw err;
+          console.log("Connection Successfull!")
+      });
+  }
 
+  function disconnectDatabase() {
+    con.end();
+}
 
-module.exports = {returnCon, queryDatabase}
+module.exports ={connectToDatabase, disconnectDatabase, returnCon, queryDatabase};
