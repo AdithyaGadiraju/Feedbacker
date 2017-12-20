@@ -7,7 +7,7 @@ var bodyParser = require('body-parser');
 var cors = require('cors');  
 var routes = require('./routes/index');  
 var users = require('./routes/users');  
-var employeeTasks = require('./routes/employeeRoutes')
+var employee = require('./routes/employee')
 
 var app = express();  
 
@@ -20,11 +20,12 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({  
     extended: false  
 }));  
+
 app.use(cookieParser());  
 app.use(express.static(path.join(__dirname, 'public')));  
 app.use('/', routes);  
 app.use('/users', users) ;  
-app.use('/employee', employeeTasks);  
+app.use('/employee', employee);  
 
 app.use(function(req, res, next) {  
     var err = new Error('Not Found');  
@@ -50,5 +51,7 @@ app.use(function(err, req, res, next) {
         error: {}  
     });  
 });  
+
+console.log("We are live!");
 
 module.exports = app;  
