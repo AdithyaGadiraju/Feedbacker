@@ -2,7 +2,7 @@ var db = require('../dbconnection');
 var mysql  = require('mysql');
 
 
-var employeeQueries = {
+var admin = {
     //GET
 showIndividualEmployeeEmail : function(employeeEmail, callback) {
     db.query("SELECT * FROM employeemaster WHERE employeeEmail =?", [employeeEmail], callback);
@@ -14,17 +14,17 @@ showAllEmployeeEmails : function (callback) {
 
     //POST
 addEmployee : function (employeeEmail, callback) {
-    db.query("INSERT INTO employeemaster (employeeEmail) VALUES ?", [employeeEmail], callback); 
+    db.query("INSERT INTO employeemaster VALUES (?)", [employeeEmail], callback); 
 },
 
     //PUT
 updateEmployee : function (newEmployeeEmail, oldEmployeeEmail, callback) { 
-    db.query("UPDATE employeemaster SET employeeEmail = ? WHERE employeeEmail = ?", [newEmployeeEmail, oldEmployeeEmail], callback);
+    db.query("UPDATE employeemaster SET employeeEmail =? WHERE employeeEmail =?", [newEmployeeEmail, oldEmployeeEmail], callback);
 },
-
+    
     //DELETE
-deleteEmployee : function (employeeEmail) { 
-    db.query("DELETE FROM employeemaster WHERE employeeEmail = ?", [employeeEmail], callback);
+deleteEmployee : function (employeeEmail, callback) { 
+    db.query("DELETE FROM employeemaster WHERE employeeEmail =?", [employeeEmail], callback);
 }
 }
 
@@ -51,4 +51,4 @@ exports.updateFeedbackRating = function () {};
 exports.deleteFeedbackratingmasterRow = function () {};
 
 
-module.exports = employeeQueries;
+module.exports = admin;
